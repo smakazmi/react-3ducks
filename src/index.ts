@@ -1,7 +1,8 @@
-import React from "react";
+import { createContext, createElement, Component } from "react";
 
 export type StoresByKey = { [index: string]: StateStore<{}> };
 export type StateUpdatedCallback = () => void;
+
 export default class StateStore<T> {
   private _state: Partial<T> = {};
   private listeners: Map<string, Set<StateUpdatedCallback>> = new Map();
@@ -9,12 +10,12 @@ export default class StateStore<T> {
     this.setState(initialState);
   }
 
-  get state(): Partial<Readonly<T>> {
+  get state(): Partial<T> {
     return this._state;
   }
 
   set state(_: Partial<T>) {
-    throw new Error("use set state or store actions to mutate the state");
+    throw new Error("use setState or store actions to mutate the state");
   }
 
   private fireListeners(newState: Partial<T>) {
@@ -30,7 +31,7 @@ export default class StateStore<T> {
   }
 
   setState(newState: Partial<T>) {
-    this._state = { ...this._state, ...newState };
+    this._state = Object.freeze({ ...this._state, ...newState });
     this.fireListeners(newState);
   }
 
@@ -48,14 +49,23 @@ export default class StateStore<T> {
   }
 }
 
-let StoresContext = React.createContext({});
+let StoresContext = createContext({});
 
-export const root = (RootComponent: React.ComponentType, stores: StoresByKey) =>
-  (props: any) => React.createElement(StoresContext.Provider, { value: stores },
-    React.createElement(RootComponent, { ...props }));
+export const root = (
+  RootComponent: React.ComponentType,
+  stores: StoresByKey
+) => (props: any) =>
+  createElement(
+    StoresContext.Provider,
+    { value: stores },
+    createElement(RootComponent, { ...props })
+  );
 
-export function container(ContainerComponent: React.ComponentType, mapState: (stores: { [index: string]: StateStore<{}> }, props: any) => any) {
-  return class extends React.Component {
+export function container(
+  ContainerComponent: React.ComponentType,
+  mapState: (stores: { [index: string]: StateStore<{}> }, props: any) => any
+) {
+  return class extends Component {
     stores: { [index: string]: StateStore<{}> } = {};
 
     updateState = () => {
@@ -81,7 +91,6 @@ export function container(ContainerComponent: React.ComponentType, mapState: (st
     }
 
     getStoreProxy(store: StateStore<any>) {
-
       return new Proxy(store, {
         get: (target: any, name: string) => {
           if (name !== "state") return target[name];
@@ -91,22 +100,23 @@ export function container(ContainerComponent: React.ComponentType, mapState: (st
     }
 
     render() {
-      return (
-        <StoresContext.Consumer>
-          {(stores: { [index: string]: StateStore<{}> }) => {
-            const proxies: StoresByKey = {};
-            this.stores = stores;
-            Object.keys(stores).forEach(k => {
-              stores[k].unsubscribe(this.updateState);
-              proxies[k] = this.getStoreProxy(stores[k]);
-            });
+      return createElement(StoresContext.Consumer, {
+        children: (stores: StoresByKey) => {
+          const proxies: StoresByKey = {};
+          this.stores = stores;
+          Object.keys(stores).forEach(k => {
+            stores[k].unsubscribe(this.updateState);
+            proxies[k] = this.getStoreProxy(stores[k]);
+          });
 
-            const newState = mapState ? mapState(proxies, this.props) : proxies;
+          const newState = mapState ? mapState(proxies, this.props) : proxies;
 
-            return <ContainerComponent {...this.props} {...newState} />;
-          }}
-        </StoresContext.Consumer>
-      );
+          return createElement<any>(ContainerComponent, {
+            ...this.props,
+            ...newState
+          });
+        }
+      });
     }
   };
 }
