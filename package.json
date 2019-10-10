@@ -1,0 +1,31 @@
+{
+  "name": "react-redeux",
+  "version": "1.0.0",
+  "description": "Simple state management library for React",
+  "main": "lib/index.js",
+  "repository": "git://github.com/smakazmi/react-soliit.git",
+  "scripts": {
+    "build": "rimraf lib & tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "state",
+    "redux",
+    "flux",
+    "context",
+    "react-redux",
+    "unstated"
+  ],
+  "author": "Ali Kazmi",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": ">=16.3.0"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.3",
+    "@types/react": ">=16.3.0"
+  }
+}
