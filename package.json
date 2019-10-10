@@ -1,6 +1,6 @@
 {
   "name": "react-redeux",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Simple state management library for React",
   "main": "lib/index.js",
   "repository": "git://github.com/smakazmi/react-redeux.git",
