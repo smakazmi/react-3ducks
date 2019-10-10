@@ -107,7 +107,14 @@ The **```root```** HOC accepts a Component and an object containing any stores t
 The **```container```** HOC passes stores as props to the **```Component```**. Alternatively, if its passed a second (optional) parameter i.e. **```mapToProps```**, it allows to map store state and behavior to props selectively.
 
 ### ```mapToProps``` 
-This is a function that can be optionally passed to the **```container```** HOC to allow for selective mapping of store state and behavior to props passed to the wrapped **```Component```**
+This is a selector function that can be optionally passed as a second parameter to the **```container```** HOC to allow for selective mapping of store state and behavior to props passed to the wrapped **```Component```**. Its defined as 
+
+```
+  function(stores, ownProps)
+```
+In the first parameter its passed an object containing all the stores connected to the **```root```** component. The second parameter contains the props passed to the wrapper component created by the **```container```** HOC.
+
+Its expected to return a plain object with prop names as keys, mapped to state or behavior
 
 ## Contributing
 Contributions are very welcome. Just send a PR against the master branch or open a new issue. Thanks!
