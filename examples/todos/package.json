@@ -10,7 +10,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-redeux": "^1.0.1"
+    "react-redeux": "^1.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
