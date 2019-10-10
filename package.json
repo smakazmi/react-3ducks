@@ -1,9 +1,9 @@
 {
   "name": "react-redeux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple state management library for React",
   "main": "lib/index.js",
-  "repository": "git://github.com/smakazmi/react-soliit.git",
+  "repository": "git://github.com/smakazmi/react-redeux.git",
   "scripts": {
     "build": "rimraf lib & tsc",
     "prepare": "npm run build"

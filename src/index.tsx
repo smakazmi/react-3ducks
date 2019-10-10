@@ -1,17 +1,27 @@
 import React from "react";
 
+export type StoresByKey = { [index: string]: StateStore<{}> };
+export type StateUpdatedCallback = () => void;
 export default class StateStore<T> {
-  state: Partial<T> = {};
-  _listeners = new Map();
+  private _state: Partial<T> = {};
+  private listeners: Map<string, Set<StateUpdatedCallback>> = new Map();
   constructor(initialState: T) {
     this.setState(initialState);
   }
 
-  _fireListeners(newState: Partial<T>) {
+  get state(): Partial<Readonly<T>> {
+    return this._state;
+  }
+
+  set state(_: Partial<T>) {
+    throw new Error("use set state or store actions to mutate the state");
+  }
+
+  private fireListeners(newState: Partial<T>) {
     const keys = Object.keys(newState);
     let filtered: Array<() => void> = [];
     keys.forEach(k => {
-      const keyListeners = this._listeners.get(k);
+      const keyListeners = this.listeners.get(k);
       if (keyListeners) {
         filtered = filtered.concat(Array.from(keyListeners.values()));
       }
@@ -20,55 +30,29 @@ export default class StateStore<T> {
   }
 
   setState(newState: Partial<T>) {
-    this.state = { ...this.state, ...newState };
-    this._fireListeners(newState);
+    this._state = { ...this._state, ...newState };
+    this.fireListeners(newState);
   }
 
-  subscribe(key: string, callback: () => void) {
-    const keyListeners = this._listeners.get(key);
+  subscribe(key: string, callback: StateUpdatedCallback) {
+    const keyListeners = this.listeners.get(key);
     if (keyListeners) {
       keyListeners.add(callback);
     } else {
-      this._listeners.set(key, new Set([callback]));
+      this.listeners.set(key, new Set([callback]));
     }
   }
 
-  unsubscribe(callback: () => void) {
-    Array.from(this._listeners.values()).forEach(l => l.delete(callback));
+  unsubscribe(callback: StateUpdatedCallback) {
+    Array.from(this.listeners.values()).forEach(l => l.delete(callback));
   }
-}
-
-function shallowCompare(newObj: any, prevObj: any, keys?: string[]) {
-  if (newObj === prevObj) return true;
-  if (
-    typeof newObj !== "object" ||
-    newObj === null ||
-    typeof prevObj !== "object" ||
-    prevObj === null
-  ) {
-    return false;
-  }
-  if (!keys) {
-    keys = Object.keys(newObj);
-  }
-  for (let key of keys) {
-    if (newObj[key] !== prevObj[key]) return false;
-  }
-
-  return true;
 }
 
 let StoresContext = React.createContext({});
 
-export function root(RootComponent: React.ComponentType, stores: { [index: string]: StateStore<{}> }) {
-  return function (props: any) {
-    return (
-      <StoresContext.Provider value={stores}>
-        <RootComponent {...props} />
-      </StoresContext.Provider>
-    );
-  };
-}
+export const root = (RootComponent: React.ComponentType, stores: StoresByKey) =>
+  (props: any) => React.createElement(StoresContext.Provider, { value: stores },
+    React.createElement(RootComponent, { ...props }));
 
 export function container(ContainerComponent: React.ComponentType, mapState: (stores: { [index: string]: StateStore<{}> }, props: any) => any) {
   return class extends React.Component {
@@ -77,12 +61,6 @@ export function container(ContainerComponent: React.ComponentType, mapState: (st
     updateState = () => {
       this.forceUpdate();
     };
-
-    shouldComponentUpdate(nextProps: any) {
-      if (!shallowCompare(nextProps, this.props)) return true;
-
-      return false;
-    }
 
     componentWillUnmount() {
       this.stores &&
@@ -101,20 +79,26 @@ export function container(ContainerComponent: React.ComponentType, mapState: (st
 
       return proxy;
     }
+
+    getStoreProxy(store: StateStore<any>) {
+
+      return new Proxy(store, {
+        get: (target: any, name: string) => {
+          if (name !== "state") return target[name];
+          else return this.getStateProxy(store);
+        }
+      });
+    }
+
     render() {
       return (
         <StoresContext.Consumer>
           {(stores: { [index: string]: StateStore<{}> }) => {
-            const proxies: { [index: string]: StateStore<{}> } = {};
+            const proxies: StoresByKey = {};
             this.stores = stores;
             Object.keys(stores).forEach(k => {
               stores[k].unsubscribe(this.updateState);
-              proxies[k] = new Proxy(stores[k], {
-                get: (target: any, name: string) => {
-                  if (name !== "state") return target[name];
-                  else return this.getStateProxy(stores[k]);
-                }
-              });
+              proxies[k] = this.getStoreProxy(stores[k]);
             });
 
             const newState = mapState ? mapState(proxies, this.props) : proxies;
