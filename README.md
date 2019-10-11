@@ -8,7 +8,7 @@ npm install react-3ducks
 
 ## Why
 
-Redux is currently the prevailing solution to manage global state in React apps. However, there are a few shortcomings to it that this project attempts to address. Some of them are as follows
+Redux is the current prevailing solution to manage global state in React apps. However, there are a few shortcomings to it that this project attempts to address. Some of them are as follows
 
 - **Encapsulation**: Redux by convention has only one global store and it encapsulate only data. The behavior is fragmented between actions, action creators, reducers, epics, sagas, thunks etc. **react-3ducks** encourages and facilitates creation of multiple stores for various concerns in the application and also allows behavior encapsulation in the stores.
 - **Asynchronous Behavior**: Redux has no built in way of handling asynchronous actions. **react-3ducks** fully supports asynchronous behavior through regular ```async/await``` or ```Promise``` based semantics that are already known and loved.
@@ -87,7 +87,7 @@ const App = root(() => (
 
 ReactDOM.render(<App/>, document.getElementById("root"));
 ```
-See [this example](https://stackblitz.com/github/smakazmi/react-3ducks/tree/master/examples/counter) in action
+See [this example](https://stackblitz.com/edit/react-3ducks-counter-sample) in action
 
 ## API
 
