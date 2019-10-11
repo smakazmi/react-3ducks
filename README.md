@@ -117,7 +117,7 @@ The **```container```** HOC passes stores as props to the **```Component```**. A
 #### ```mapToProps``` 
 This is a selector function that can be optionally passed as a second parameter to the **```container```** HOC to allow for selective mapping of store state and behavior to props passed to the wrapped **```Component```**. Its defined as 
 
-```
+```js
 function(stores, ownProps)
 ```
 In the first parameter its passed an object containing all the stores connected to the **```root```** component. The second parameter contains the props passed to the wrapper component created by the **```container```** HOC.
