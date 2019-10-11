@@ -2,7 +2,7 @@
 A simple react global state management solution
 
 ## Installation
-```js
+```
 npm install react-3ducks
 ```
 
