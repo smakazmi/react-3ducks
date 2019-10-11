@@ -1,19 +1,19 @@
-# react-redeux
+# react-3ducks :duck: :hatched_chick: :hatching_chick:
 A simple react global state management solution
 
 ## Installation
 ```js
-npm install react-redeux
+npm install react-3ducks
 ```
 
 ## Why
 
 Redux is currently the prevailing solution to manage global state in React apps. However, there are a few shortcomings to it that this project attempts to address. Some of them are as follows
 
-- **Encapsulation**: There is only one store and it encapsulate only data. The behavior is fragmented between actions, action creators, reducers, epics, sagas, etc. **react-redeux** encourages and facilitates creation of multiple stores for various concerns in the application and also allows behavior encapsulation in the stores
-- **Asynchronous Behavior**: Redux has no built in way of handling asynchronous actions. **react-reduex** fully supports asynchronous behavior through regular ```async/await``` or ```Promise``` based semantics that are already known and loved.
-- **Complexity**: Its hard to quickly grasp what's going on in a Redux app. Mainly because of the fragmentation. There are many files and its not obvious what's going on where. **react-redeux** addresses this by keeping all related logic and data together. 
-- **Boilerplate**: The amount of boilerplate code in Redux apps is just too much. **react-redeux** allows for very terse declaration and definition of both state and behavior.
+- **Encapsulation**: Redux by convention has only one global store and it encapsulate only data. The behavior is fragmented between actions, action creators, reducers, epics, sagas, thunks etc. **react-3ducks** encourages and facilitates creation of multiple stores for various concerns in the application and also allows behavior encapsulation in the stores.
+- **Asynchronous Behavior**: Redux has no built in way of handling asynchronous actions. **react-3ducks** fully supports asynchronous behavior through regular ```async/await``` or ```Promise``` based semantics that are already known and loved.
+- **Complexity**: Its hard to quickly grasp what's going on in a Redux app. Mainly because of the fragmentation. There are many files and its not obvious what's going on where. **react-3ducks** addresses this by keeping all related logic and data together. 
+- **Boilerplate**: The amount of boilerplate code in Redux apps is just too much. **react-3ducks** allows for very terse declaration and definition of both state and behavior.
 
 ## Example
 
@@ -24,7 +24,7 @@ This is a bare minimum example, Check out  [this](https://github.com/jamiebuilds
 
 import React from "react";
 import ReactDOM from "react-dom";
-import StateStore, {root, container} from "react-redeux";
+import StateStore, {root, container} from "react-3ducks";
 
 //Store class
 
@@ -91,6 +91,8 @@ See [this example](https://codesandbox.io/s/react-redeux-barebones-example-t0ws2
 
 ## API
 
+Time to introduce the three ducks (i.e. **```StateStore```**, **```root```**, and **```container```**)  in **react-3ducks**
+
 ### ```StateStore``` class
 Encapsulates state and behavior. Should be extended to create separate specialized stores for e.g. CartStore, ProductsStore, AuthStore etc.
 
@@ -106,7 +108,7 @@ The **```root```** HOC accepts a Component and an object containing any stores t
 ### ```container(Component, mapToProps?)``` Higher Order Component
 The **```container```** HOC passes stores as props to the **```Component```**. Alternatively, if its passed a second (optional) parameter i.e. **```mapToProps```**, it allows to map store state and behavior to props selectively.
 
-### ```mapToProps``` 
+#### ```mapToProps``` 
 This is a selector function that can be optionally passed as a second parameter to the **```container```** HOC to allow for selective mapping of store state and behavior to props passed to the wrapped **```Component```**. Its defined as 
 
 ```
