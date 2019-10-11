@@ -14,7 +14,7 @@ npm install react-3ducks
 
 ## Why
 
-Redux is currently the prevailing solution to manage global state in React apps. However, there are a few shortcomings to it that this project attempts to address. Some of them are as follows
+Redux is the current prevailing solution to manage global state in React apps. However, there are a few shortcomings to it that this project attempts to address. Some of them are as follows
 
 - **Encapsulation**: Redux by convention has only one global store and it encapsulate only data. The behavior is fragmented between actions, action creators, reducers, epics, sagas, thunks etc. **react-3ducks** encourages and facilitates creation of multiple stores for various concerns in the application and also allows behavior encapsulation in the stores.
 - **Asynchronous Behavior**: Redux has no built in way of handling asynchronous actions. **react-3ducks** fully supports asynchronous behavior through regular ```async/await``` or ```Promise``` based semantics that are already known and loved.
@@ -23,7 +23,7 @@ Redux is currently the prevailing solution to manage global state in React apps.
 
 ## Example
 
-This is a bare minimum example, Check out  [this](https://github.com/jamiebuilds/unstated-next) for a (relatively) more elaborate one
+This is a bare minimum example, Check out [this](https://stackblitz.com/github/smakazmi/react-3ducks/tree/master/examples/todos) for a (relatively) more elaborate one
 
 ```jsx
 //Imports
@@ -93,7 +93,7 @@ const App = root(() => (
 
 ReactDOM.render(<App/>, document.getElementById("root"));
 ```
-See [this example](https://codesandbox.io/s/react-redeux-barebones-example-t0ws2) in action
+See [this example](https://stackblitz.com/edit/react-3ducks-counter-sample) in action
 
 ## API
 
@@ -109,7 +109,7 @@ Encapsulates state and behavior. Should be extended to create separate specializ
 ```state``` also works exactly as it does in React components. Allows readonly access to the current state.
 
 ### ```root(Component, {store1, store2, ...})``` Higher Order Component
-The **```root```** HOC accepts a Component and an object containing any stores that should be made available to the **```container```** objects under **```Component```**
+The **```root```** HOC accepts a Component and an object containing any stores that should be made available to the **```container```** components under **```Component```**
 
 ### ```container(Component, mapToProps?)``` Higher Order Component
 The **```container```** HOC passes stores as props to the **```Component```**. Alternatively, if its passed a second (optional) parameter i.e. **```mapToProps```**, it allows to map store state and behavior to props selectively.
