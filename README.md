@@ -103,7 +103,7 @@ Encapsulates state and behavior. Should be extended to create separate specializ
 ```state``` also works exactly as it does in React components. Allows readonly access to the current state.
 
 ### ```root(Component, {store1, store2, ...})``` Higher Order Component
-The **```root```** HOC accepts a Component and an object containing any stores that should be made available to the **```container```** objects under **```Component```**
+The **```root```** HOC accepts a Component and an object containing any stores that should be made available to the **```container```** components under **```Component```**
 
 ### ```container(Component, mapToProps?)``` Higher Order Component
 The **```container```** HOC passes stores as props to the **```Component```**. Alternatively, if its passed a second (optional) parameter i.e. **```mapToProps```**, it allows to map store state and behavior to props selectively.
