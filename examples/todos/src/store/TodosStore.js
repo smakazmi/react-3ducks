@@ -1,4 +1,4 @@
-import StateStore from "react-redeux";
+import StateStore from "react-3ducks";
 import axios from "axios";
 
 export class TodosStore extends StateStore {

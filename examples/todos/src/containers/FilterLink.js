@@ -1,4 +1,4 @@
-import { container } from "react-redeux";
+import { container } from "react-3ducks";
 import Link from "../components/Link";
 
 export default container(Link, ({ todosStore }, props) => ({

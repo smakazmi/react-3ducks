@@ -1,6 +1,6 @@
 import TodoList from "../components/TodoList";
 import { VisibilityFilters } from "../store/TodosStore";
-import { container } from "react-redeux";
+import { container } from "react-3ducks";
 
 function getVisibleTodos(todos, filter) {
   switch (filter) {

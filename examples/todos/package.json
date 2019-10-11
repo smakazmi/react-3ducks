@@ -9,8 +9,8 @@
     "axios": "^0.19.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-redeux": "^1.0.4"
+    "react-3ducks": "^1.0.5",
+    "react-dom": "^16.8.6"
   },
   "scripts": {
     "start": "react-scripts start",

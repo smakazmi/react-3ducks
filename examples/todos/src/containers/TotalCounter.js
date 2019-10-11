@@ -1,5 +1,5 @@
 import React from "react";
-import { container } from "react-redeux";
+import { container } from "react-3ducks";
 
 const TotalCounter = ({ totalTodos }) => (
   <div>
