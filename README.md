@@ -17,7 +17,7 @@ Redux is currently the prevailing solution to manage global state in React apps.
 
 ## Example
 
-This is a bare minimum example, Check out  [this](https://github.com/jamiebuilds/unstated-next) for a (relatively) more elaborate one
+This is a bare minimum example, Check out [this](https://stackblitz.com/github/smakazmi/react-3ducks/tree/master/examples/todos) for a (relatively) more elaborate one
 
 ```jsx
 //Imports
@@ -87,7 +87,7 @@ const App = root(() => (
 
 ReactDOM.render(<App/>, document.getElementById("root"));
 ```
-See [this example](https://codesandbox.io/s/react-redeux-barebones-example-t0ws2) in action
+See [this example](https://stackblitz.com/github/smakazmi/react-3ducks/tree/master/examples/counter) in action
 
 ## API
 
