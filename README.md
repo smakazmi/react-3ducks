@@ -1,8 +1,14 @@
 # react-3ducks :duck: :hatched_chick: :hatching_chick:
 A simple react global state management solution
 
+- [Installation](#installation)
+- [Why](#why)
+- [Example](#example)
+- [API](#api)
+- [Contributing](#contributing)
+
 ## Installation
-```js
+```
 npm install react-3ducks
 ```
 
