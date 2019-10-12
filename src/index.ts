@@ -1,26 +1,27 @@
 import { createContext, createElement, Component } from "react";
-
+import autobind from "auto-bind";
 export type StoresByKey = { [index: string]: StateStore<{}> };
 export type StateUpdatedCallback = () => void;
 
 export default class StateStore<T> {
-  private _state: Partial<T> = {};
+  private _state: T;
   private listeners: Map<string, Set<StateUpdatedCallback>> = new Map();
   constructor(initialState: T) {
-    this.setState(initialState);
+    this._state = Object.freeze(initialState);
+    autobind(this);
   }
 
-  get state(): Partial<T> {
+  get state(): T {
     return this._state;
   }
 
-  set state(_: Partial<T>) {
+  set state(_: T) {
     throw new Error("use setState or store actions to mutate the state");
   }
 
   private fireListeners(newState: Partial<T>) {
     const keys = Object.keys(newState);
-    let filtered: Array<() => void> = [];
+    let filtered: Array<StateUpdatedCallback> = [];
     keys.forEach(k => {
       const keyListeners = this.listeners.get(k);
       if (keyListeners) {
@@ -61,12 +62,12 @@ export const root = (
     createElement(RootComponent, { ...props })
   );
 
-export function container(
-  ContainerComponent: React.ComponentType,
-  mapState: (stores: { [index: string]: StateStore<{}> }, props: any) => any
-) {
+export function container<P, S extends StoresByKey>(
+  ContainerComponent: React.ComponentType<P>,
+  mapState?: (stores: S, props: any) => any
+): React.ComponentType<Partial<P>> {
   return class extends Component {
-    stores: { [index: string]: StateStore<{}> } = {};
+    stores: StoresByKey = {};
 
     updateState = () => {
       this.forceUpdate();
@@ -109,11 +110,13 @@ export function container(
             proxies[k] = this.getStoreProxy(stores[k]);
           });
 
-          const newState = mapState ? mapState(proxies, this.props) : proxies;
+          const newState = mapState
+            ? mapState(proxies as S, this.props)
+            : proxies;
 
           return createElement<any>(ContainerComponent, {
-            ...this.props,
-            ...newState
+            ...newState,
+            ...this.props
           });
         }
       });
