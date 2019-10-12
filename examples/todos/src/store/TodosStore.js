@@ -3,31 +3,31 @@ import axios from "axios";
 
 export class TodosStore extends StateStore {
   nextTodoId = 1;
-  addTodo = text => {
+  addTodo(text) {
     this.setState({
       todos: [
         ...this.state.todos,
         { id: this.nextTodoId++, text, completed: false }
       ]
     });
-  };
-  toggleTodo = id => {
+  }
+  toggleTodo(id) {
     this.setState({
       todos: this.state.todos.map(t => ({
         ...t,
         completed: t.id === id ? !t.completed : t.completed
       }))
     });
-  };
+  }
 
-  addRandomTodo = async () => {
+  async addRandomTodo() {
     const { data } = await axios.get("https://api.quotable.io/random");
 
     this.addTodo(data.content);
-  };
-  setVisibilityFilter = filter => {
+  }
+  setVisibilityFilter(filter) {
     this.setState({ filter });
-  };
+  }
 }
 
 export const VisibilityFilters = {
