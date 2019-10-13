@@ -50,7 +50,10 @@ export default class StateStore<T> {
   }
 }
 
-let StoresContext = createContext({});
+const StoresContext = createContext({});
+
+//@ts-ignore
+export const _StoresContext = global.__DEV__ ? StoresContext : undefined;
 
 export const root = (
   RootComponent: React.ComponentType,
@@ -62,7 +65,7 @@ export const root = (
     createElement(RootComponent, { ...props })
   );
 
-export function container<P, S extends StoresByKey>(
+export function container<P, S extends StoresByKey = StoresByKey>(
   ContainerComponent: React.ComponentType<P>,
   mapState?: (stores: S, props: any) => any
 ): React.ComponentType<Partial<P>> {
@@ -113,11 +116,12 @@ export function container<P, S extends StoresByKey>(
           const newState = mapState
             ? mapState(proxies as S, this.props)
             : proxies;
-
-          return createElement<any>(ContainerComponent, {
+          const mergedProps = {
             ...newState,
             ...this.props
-          });
+          };
+
+          return createElement<any>(ContainerComponent, mergedProps);
         }
       });
     }
