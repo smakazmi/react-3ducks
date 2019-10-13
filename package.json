@@ -1,6 +1,6 @@
 {
   "name": "react-3ducks",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Simple state management library for React",
   "main": "lib/index.js",
   "repository": "git://github.com/smakazmi/react-3ducks.git",
