@@ -16,7 +16,7 @@
     "sourceMap": true,
     "outDir": "lib",
     "removeComments": true,
-    "typeRoots": ["index.d.ts", "node_modules/@types"],
+    "typeRoots": ["index.d.ts", "src/global.d.ts", "node_modules/@types"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },

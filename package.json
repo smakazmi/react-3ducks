@@ -6,6 +6,8 @@
   "repository": "git://github.com/smakazmi/react-3ducks.git",
   "scripts": {
     "build": "rimraf lib & tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "prepare": "npm run build"
   },
   "keywords": [
@@ -25,8 +27,18 @@
   },
   "devDependencies": {
     "@types/auto-bind": "^2.1.0",
+    "@types/enzyme": "^3.10.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.18",
     "@types/react": ">=16.3.0",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.2",
+    "jest": "^24.9.0",
+    "react": ">=16.3.0",
+    "react-dom": "^16.10.2",
     "rimraf": "^3.0.0",
+    "ts-jest": "^24.1.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
