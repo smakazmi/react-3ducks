@@ -52,7 +52,6 @@ export default class StateStore<T> {
 
 const StoresContext = createContext({});
 
-//@ts-ignore
 export const _StoresContext = global.__DEV__ ? StoresContext : undefined;
 
 export const root = (
